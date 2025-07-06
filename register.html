@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silent Library - Your Gateway to Knowledge</title>
+    <link rel="stylesheet" href="style/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- <script src="scripts/register.js"></script> -->
+    <script>
+        $(document).ready(function () {
+            $('header').load('header.html');
+            $('footer').load('footer.html');
+        });
+    </script>
+</head>
+
+<body>
+    <!--Header Section -->
+    <header></header>
+
+    <main>
+        <h1>Registration Form</h1>
+
+  <form id="registrationForm">
+    <input type="hidden" id="editIndex" value="-1">
+    <label>Full Name:</label>
+    <input type="text" id="name" required>
+    <label>Email:</label>
+    <input type="email" id="email" required>
+    <label>Phone:</label>
+    <input type="tel" id="phone" required>
+    <button type="submit" class="btn">Submit</button>
+  </form>
+
+  <h2>Registered Users</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="userTable"></tbody>
+  </table>
+    </main>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <footer></footer>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-7qAoOXltbVP82dhxHAUje59V5r2YsVfBafyUDxEdApLPmcdhBPg1DKg1ERo0BZlK"
+        crossorigin="anonymous"></script>
+
+
+    <script>
+          
+    const form = document.getElementById("registrationForm");
+    const userTable = document.getElementById("userTable");
+    const editIndexInput = document.getElementById("editIndex");
+
+    // Fetch users from local storage
+    function getUsers() {
+      return JSON.parse(localStorage.getItem("users")) || [];
+    }
+
+    // Save users to local storage
+    function saveUsers(users) {
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+
+    // Render users in the table
+    function renderUsers() {
+      const users = getUsers();
+      userTable.innerHTML = users.map((user, index) => `
+        <tr>
+          <td>${user.name}</td>
+          <td>${user.email}</td>
+          <td>${user.phone}</td>
+          <td>
+            <button class="btn edit" onclick="editUser(${index})">Edit</button>
+            <button class="btn delete" onclick="deleteUser(${index})">Delete</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    // Add or update user
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const editIndex = parseInt(editIndexInput.value);
+
+      const users = getUsers();
+
+      if (editIndex === -1) {
+        // Add new user
+        users.push({ name, email, phone });
+      } else {
+        // Update existing user
+        users[editIndex] = { name, email, phone };
+        editIndexInput.value = -1; // Reset the edit index
+        form.querySelector("button[type='submit']").textContent = "Submit"; // Reset button text
+      }
+
+      saveUsers(users);
+      form.reset();
+      renderUsers();
+    });
+
+    // Edit user
+    function editUser(index) {
+      const users = getUsers();
+      const user = users[index];
+
+      document.getElementById("name").value = user.name;
+      document.getElementById("email").value = user.email;
+      document.getElementById("phone").value = user.phone;
+      editIndexInput.value = index;
+      form.querySelector("button[type='submit']").textContent = "Update";
+    }
+
+    // Delete user
+    function deleteUser(index) {
+      const users = getUsers();
+      users.splice(index, 1);
+      saveUsers(users);
+      renderUsers();
+    }
+
+    // Initialize table
+    renderUsers();
+    </script>
+</body>
+
+</html>

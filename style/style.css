@@ -22,6 +22,45 @@ body {
     overflow-x: hidden;
 }
 
+/* registration form style */
+
+body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    input {
+      margin: 5px 0;
+      padding: 8px;
+      width: 100%;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    .btn {
+      padding: 8px 15px;
+      cursor: pointer;
+    }
+    .btn.edit {
+      background-color: orange;
+      color: white;
+    }
+    .btn.delete {
+      background-color: red;
+      color: white;
+    }
+
 /* for navbar style */
 .navbar {
     background: var(--gradient) !important;
